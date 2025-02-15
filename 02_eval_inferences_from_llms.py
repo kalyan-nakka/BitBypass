@@ -27,7 +27,7 @@ JBS = [
 
 
 def main():
-    harmbench_cls = load_harmbench_jb_classifier()
+    cls, tokenizer = load_harmbench_jb_classifier()
     for benchmark in BENCHMARKS:
         evals = {}
         for jb in JBS:
@@ -35,7 +35,7 @@ def main():
             for llm in LLMS:
                 each_llm_eval[llm] = {
                     "rrr": response_refusal_rate(target_llm=llm, dataset=benchmark, jb=jb),
-                    "jsr": jailbreak_success_rate(target_llm=llm, dataset=benchmark, jb=jb, classifier=harmbench_cls),
+                    "jsr": jailbreak_success_rate(target_llm=llm, dataset=benchmark, jb=jb, cls=cls, tokenizer=tokenizer),
                 }
             evals[jb] = each_llm_eval
 
