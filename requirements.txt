@@ -1,0 +1,9 @@
+anthropic==0.45.2
+together==1.4.1
+openai==1.63.0
+google-genai==1.2.0
+torch==2.6.0
+transformers==4.48.3
+tqdm==4.67.1
+pandas==2.2.3
+PyYAML==6.0.2
