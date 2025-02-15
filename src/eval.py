@@ -2,7 +2,9 @@ import json
 import torch
 
 from tqdm import tqdm
-from transformers import AutoModelForCausalLM, AutoTokenizer
+
+from vllm import LLM, SamplingParams
+from transformers import AutoTokenizer
 
 
 REFUSAL_JUDGE_TEST_PREFIXES = [
@@ -114,28 +116,28 @@ def response_refusal_rate(target_llm, dataset, jb="bin2text"):
     return round((sum(responses_refused) / len(responses_refused))*100, 2)
 
 
+def load_harmbench_jb_classifier():
+    cls_path = "cais/HarmBench-Llama-2-13b-cls"
+    cls = LLM(model=cls_path, dtype='bfloat16', tensor_parallel_size=1)
+
+    tokenizer = AutoTokenizer.from_pretrained(cls_path, use_fast=False)
+    tokenizer.truncation_side = "left"
+
+    cls.set_tokenizer(tokenizer)
+    return cls
+
+
 def jailbreak_success_rate(target_llm, dataset, jb="bin2text"):
     responses_json_path = f"results/{jb}-{dataset}-{target_llm}-responses.json"
     raw_responses = read_responses_from_json(responses_json_path)
     inputs_to_classifier = generate_input_for_jb_classifier(responses_raw=raw_responses)
 
-    cls = AutoModelForCausalLM.from_pretrained("cais/HarmBench-Llama-2-13b-cls",
-                                               torch_dtype=torch.bfloat16,
-                                               device_map="auto")
-    tokenizer = AutoTokenizer.from_pretrained("cais/HarmBench-Llama-2-13b-cls",
-                                              use_fast=False,
-                                              truncation_side="left",
-                                              padding_side="left")
-    encoded = tokenizer(inputs_to_classifier, return_tensors='pt', padding='longest')
-    with torch.no_grad():
-        output_ids = cls.generate(
-            **encoded.to(cls.device),
-            do_sample=False,
-            max_new_tokens=1,
-        ).cpu()
-        output_ids = output_ids[:, len(encoded.input_ids[0]):]
+    # Load Harmbench evaluator
+    cls = load_harmbench_jb_classifier()
+    cls_params = SamplingParams(temperature=0.0, max_tokens=1)
+    outputs = cls.generate(inputs_to_classifier, cls_params)
 
-    completion = tokenizer.batch_decode(output_ids, skip_special_tokens=False)
+    completion = [o.outputs[0].text for o in outputs]
     completion = list(map(str.lower, completion))
 
     return round((completion.count("yes") / len(completion))*100, 2)
