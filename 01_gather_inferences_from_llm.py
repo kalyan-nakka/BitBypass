@@ -4,7 +4,7 @@ import pandas as pd
 
 from src.llm import LLM
 from src.utils import (get_responses_from_llm,
-                       save_responses_to_json,
+                       save_data_to_json,
                        get_dataset_path)
 
 
@@ -53,8 +53,7 @@ def main():
 
     # Save the inferences (responses) as JSON file
     os.makedirs("results", exist_ok=True)
-    save_responses_to_json(file_name=f"results/bin2text-{args.dataset}-{args.target_llm}-responses.json",
-                           responses=responses)
+    save_data_to_json(file_name=f"results/bin2text-{args.dataset}-{args.target_llm}-responses.json", data=responses)
 
 if __name__ == '__main__':
     main()

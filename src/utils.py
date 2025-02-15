@@ -3,9 +3,9 @@ import json
 from tqdm import tqdm
 
 
-def save_responses_to_json(file_name, responses):
+def save_data_to_json(file_name, data):
     with open(file_name, 'w') as f:
-        json.dump(responses, f, indent=4)
+        json.dump(data, f, indent=4)
 
 
 def get_dataset_path(dataset_name):
