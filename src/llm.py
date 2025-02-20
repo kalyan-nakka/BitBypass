@@ -133,7 +133,7 @@ class LLM:
                 except Exception as _:
                     continue
 
-        time.sleep(45)
+        time.sleep(self.round_sleep_time)
         return message.text
 
     def gpt_4o_completion(self, prompt):
