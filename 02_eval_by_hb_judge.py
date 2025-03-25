@@ -17,7 +17,7 @@ LLMS = [
 ]
 
 BENCHMARKS = [
-    "cyberfraud",
+    "phishycontent",
 ]
 
 JBS = [

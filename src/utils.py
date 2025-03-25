@@ -32,11 +32,11 @@ def get_dataset_path(dataset_name, attack="bin2text"):
         elif attack == "dra":
             dataset_path = "data/behaviors_dra.csv"
 
-    elif dataset_name == "cyberfraud":
+    elif dataset_name == "phishycontent":
         if attack in ["di", "bin2text"]:
-            dataset_path = "data/cyberfraud.csv"
+            dataset_path = "data/phishycontent.csv"
         else:
-            raise NotImplementedError(f"In this project, CyberFraud dataset is available for only "
+            raise NotImplementedError(f"In this project, PhishyContent dataset is available for only "
                                       f"'Direct Instruction' and 'Bin2Text' prompt strategies.")
 
     else:

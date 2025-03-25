@@ -40,7 +40,7 @@ def parse_arguments():
                         default="advbench_50",
                         choices=["advbench_50",
                                  "behaviors",
-                                 "cyberfraud"],
+                                 "phishycontent"],
                         help="Name of Benchmark Dataset")
 
     # Target LLM
