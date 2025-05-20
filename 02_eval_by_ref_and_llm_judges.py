@@ -23,11 +23,11 @@ BENCHMARKS = [
 ]
 
 JBS = [
-    "bin2text",
-    "bin2text-ab1",
-    "bin2text-ab2",
-    "bin2text-ab3",
-    "bin2text-ab4",
+    "bitbypass",
+    "bitbypass-ab1",
+    "bitbypass-ab2",
+    "bitbypass-ab3",
+    "bitbypass-ab4",
     "di",
     "autodan",
     "deepinc",
@@ -80,7 +80,8 @@ def main():
                     response_evals.append(raw_response_eval)
 
                 # Save the evaluations to JSON for further analysis
-                save_data_to_json(file_name=f"results_eval/{jb}-{benchmark}-{llm}-response-evals.json", data=response_evals)
+                save_data_to_json(file_name=f"results_eval/{jb}-{benchmark}-{llm}-response-evals.json",
+                                  data=response_evals)
 
 
 if __name__ == '__main__':
