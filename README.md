@@ -151,4 +151,4 @@ Generation Performance experiment.
 Code for baseline jailbreak attacks is obtaned from [AutoDAN](https://github.com/SheltonLiu-N/AutoDAN), 
 [DeepInception](https://github.com/tmlr-group/DeepInception), and [DRA](https://github.com/LLM-DRA/DRA/) repos. 
 
-Thank you for sharing the artifacts.
+We thank the creators of these artifacts for sharing them to the research community.
