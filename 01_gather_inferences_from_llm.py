@@ -16,17 +16,17 @@ from src.utils import (get_responses_from_llm,
 
 
 def parse_arguments():
-    parser = argparse.ArgumentParser("Bin2Text")
+    parser = argparse.ArgumentParser("BitBypass")
 
     # Attack Strategy
     parser.add_argument("--attack",
                         type=str,
-                        default="bin2text",
-                        choices=["bin2text",
-                                 "bin2text-ab1",
-                                 "bin2text-ab2",
-                                 "bin2text-ab3",
-                                 "bin2text-ab4",
+                        default="bitbypass",
+                        choices=["bitbypass",
+                                 "bitbypass-ab1",
+                                 "bitbypass-ab2",
+                                 "bitbypass-ab3",
+                                 "bitbypass-ab4",
                                  "di",
                                  "autodan",
                                  "deepinc",
@@ -84,28 +84,28 @@ def main():
     # Get inferences (responses) from the Target LLM #
     ##################################################
 
-    # Bin2Text
-    if args.attack == "bin2text":
+    # BitBypass
+    if args.attack == "bitbypass":
         responses = get_responses_from_llm(llm=target_llm, data_records=dataset_records)
 
-    # Bin2Text Ablation Study 1
+    # BitBypass Ablation Study 1
     # [BINARY_WORD] w/o Separator in User Prompt
-    elif args.attack == "bin2text-ab1":
+    elif args.attack == "bitbypass-ab1":
         responses = get_responses_from_llm_ab1(llm=target_llm, data_records=dataset_records)
 
-    # Bin2Text Ablation Study 2
-    # Remove [CODE_BLOCK]s in System Prompt
-    elif args.attack == "bin2text-ab2":
+    # BitBypass Ablation Study 2
+    # Remove Program-of-Thought in System Prompt
+    elif args.attack == "bitbypass-ab2":
         responses = get_responses_from_llm_ab2(llm=target_llm, data_records=dataset_records)
 
-    # Bin2Text Ablation Study 3
-    # Remove Forcing Statements in System Prompt
-    elif args.attack == "bin2text-ab3":
+    # BitBypass Ablation Study 3
+    # Remove Curbed Capabilities in System Prompt
+    elif args.attack == "bitbypass-ab3":
         responses = get_responses_from_llm_ab3(llm=target_llm, data_records=dataset_records)
 
-    # Bin2Text Ablation Study 4
-    # Initially Identified Vulnerability Variant
-    elif args.attack == "bin2text-ab4":
+    # BitBypass Ablation Study 4
+    # Chat Interface Target-able Version
+    elif args.attack == "bitbypass-ab4":
         responses = get_responses_from_llm_ab4(llm=target_llm, data_records=dataset_records)
 
     # Direct Instruction
@@ -123,11 +123,15 @@ def main():
                                               attack=args.attack,
                                               dataset_path=dataset_path)
 
+    else:
+        raise NotImplementedError("This attack is not implemented in this version")
+
     ##################################
     # Save the response in JSON file #
     ##################################
     os.makedirs("results", exist_ok=True)
-    save_data_to_json(file_name=f"results/{args.attack}-{args.dataset}-{args.target_llm}-responses.json", data=responses)
+    save_data_to_json(file_name=f"results/{args.attack}-{args.dataset}-{args.target_llm}-responses.json",
+                      data=responses)
 
 
 if __name__ == '__main__':
