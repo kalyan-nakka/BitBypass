@@ -28,6 +28,7 @@ JBS = [
     "bitbypass-ab2",
     "bitbypass-ab3",
     "bitbypass-ab4",
+    "bitbypass-ab5",
     "di",
     "autodan",
     "deepinc",
