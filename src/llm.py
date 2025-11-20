@@ -184,7 +184,7 @@ class LLM:
                 ],
                 max_tokens=self.max_tokens,
                 temperature=self.temperature,
-                stop=["</s>","[/INST]"],
+                stop=["</s>", "[/INST]"],
                 stream=False
             )
         except Exception as e:
@@ -202,7 +202,7 @@ class LLM:
                         ],
                         max_tokens=self.max_tokens,
                         temperature=self.temperature,
-                        stop=["</s>","[/INST]"],
+                        stop=["</s>", "[/INST]"],
                         stream=False
                     )
                     break

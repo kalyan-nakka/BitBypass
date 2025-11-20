@@ -12,7 +12,8 @@ from src.utils import (get_responses_from_llm,
                        get_responses_from_llm_base64,
                        get_responses_from_llm_jb,
                        get_responses_from_llm_ab3,
-                       get_responses_from_llm_ab4)
+                       get_responses_from_llm_ab4,
+                       get_responses_from_llm_ab5)
 
 
 def parse_arguments():
@@ -27,6 +28,7 @@ def parse_arguments():
                                  "bitbypass-ab2",
                                  "bitbypass-ab3",
                                  "bitbypass-ab4",
+                                 "bitbypass-ab5",
                                  "di",
                                  "autodan",
                                  "deepinc",
@@ -107,6 +109,11 @@ def main():
     # Chat Interface Target-able Version
     elif args.attack == "bitbypass-ab4":
         responses = get_responses_from_llm_ab4(llm=target_llm, data_records=dataset_records)
+
+    # BitBypass Ablation Study 5
+    # Multi-word Camouflage
+    elif args.attack == "bitbypass-ab5":
+        responses = get_responses_from_llm_ab5(llm=target_llm, data_records=dataset_records)
 
     # Direct Instruction
     elif args.attack == "di":

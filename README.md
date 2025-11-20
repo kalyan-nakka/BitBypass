@@ -1,6 +1,6 @@
 # BitBypass
 
-This repository is the official implementation of our paper `BitBypass: A New Direction in Jailbreaking Aligned Large 
+This repository is the official implementation of our [paper](https://arxiv.org/abs/2506.02479) `BitBypass: A New Direction in Jailbreaking Aligned Large
 Language Models with Bitstream Camouflage`, for performing jailbreak evaluation.
 
 ## Setup
@@ -146,9 +146,23 @@ Guard Models experiment.
 Use the jupyter notebook `03_gen_results_perf_phishycontent.ipynb` for replicating the results of our Phishing Content 
 Generation Performance experiment.
 
+## Citation
+If our work is useful for your own, you can cite us with the following BibTex entry:
+```bibtex
+@misc{nakka2025bitbypass,
+      title={BitBypass: A New Direction in Jailbreaking Aligned Large Language Models with Bitstream Camouflage}, 
+      author={Kalyan Nakka and Nitesh Saxena},
+      year={2025},
+      eprint={2506.02479},
+      archivePrefix={arXiv},
+      primaryClass={cs.CR},
+      url={https://arxiv.org/abs/2506.02479}, 
+}
+```
+
 ## Acknowledgements
 
-Code for baseline jailbreak attacks is obtaned from [AutoDAN](https://github.com/SheltonLiu-N/AutoDAN), 
+Code for baseline jailbreak attacks is obtained from [AutoDAN](https://github.com/SheltonLiu-N/AutoDAN), 
 [DeepInception](https://github.com/tmlr-group/DeepInception), and [DRA](https://github.com/LLM-DRA/DRA/) repos. 
 
 We thank the creators of these artifacts for sharing them to the research community.
