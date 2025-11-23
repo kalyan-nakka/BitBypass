@@ -12,11 +12,12 @@ from src.utils import save_data_to_json
 
 MODEL_NAME_HF_URLS_MAP = {
     # Language Models
-    "llama_2_lm": "meta-llama/Llama-2-7b-chat-hf",
-    "llama_3_lm": "meta-llama/Llama-3.1-8B-Instruct",
-    "gemma_2_lm": "google/gemma-2-9b-it",
+    "llama_1_lm": "huggyllama/llama-7b",
+    "llama_2_lm": "meta-llama/Llama-2-7b-hf",
+    "llama_3_lm": "meta-llama/Llama-3.1-8B",
+    "gemma_2_lm": "google/gemma-2-9b",
     "phi_3_lm": "microsoft/Phi-3.5-mini-instruct",
-    "mistral_lm": "mistralai/Mistral-7B-Instruct-v0.1",
+    "mistral_lm": "mistralai/Mistral-7B-v0.3",
 
     # Guard Models
     "llama_1_gm": "meta-llama/LlamaGuard-7b",
