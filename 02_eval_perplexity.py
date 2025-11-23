@@ -41,20 +41,20 @@ BENCHMARKS = [
 
 
 ADVERSARIAL_STRATEGIES = [
-    "di",
+    # "di",
     "bitbypass",
-    "base32",
+    # "base32",
     "base64",
-    "base85",
-    "rot13",
+    # "base85",
+    # "rot13",
     "hex",
     "ascii",
-    "unicode_escape",
+    # "unicode_escape",
     "morse",
-    "caesar",
-    "atbash",
+    # "caesar",
+    # "atbash",
     "octal",
-    "leetspeak",
+    # "leetspeak",
 ]
 
 MORSE_CODE = {
@@ -228,20 +228,6 @@ class PerplexityAnalyzer:
 
         return perplexity
 
-    def calculate_perplexity_2(self, text: str) -> float:
-        sample_input_ids = self.tokenizer.encode(
-            text,
-            return_tensors="pt",
-            padding="max_length",
-            max_length=20).to(self.model.device)
-
-        with torch.no_grad():
-            sample_outputs = self.model(sample_input_ids, labels=sample_input_ids)
-
-        logits = sample_outputs.logits
-        score = self.perplexity_metric(preds=logits[:, :-1], target=sample_input_ids[:, 1:])
-        return score.item()
-
 
 def parse_arguments():
     parser = argparse.ArgumentParser("Perplexity Analysis")
@@ -304,49 +290,22 @@ def main():
                 # Get the adversarial prompt #
                 ##############################
                 if adv_strategy == "bitbypass":
-                    full_prompt = get_bitbypass_prompt(data_record)
-                    full_prompt_v2 = full_prompt
+                    prompts = get_bitbypass_prompt(data_record)
+                    prompt = f"{prompts.get("system", "")}\n{prompts.get("user", "")}"
                 elif adv_strategy == "di":
-                    full_prompt = get_di_prompt(data_record)
-                    full_prompt_v2 = full_prompt
+                    prompts = get_di_prompt(data_record)
+                    prompt = prompts.get("user", "")
                 else:
-                    full_prompt = generate_encoded_prompt(encoding=adv_strategy, text=data_record)
-                    full_prompt_v2 = generate_encoded_prompt_2(encoding=adv_strategy, text=data_record)
+                    prompts = generate_encoded_prompt_2(encoding=adv_strategy, text=data_record)
+                    prompt = prompts.get("user", "")
 
                 perplexity_results.append(
                     {
                         "id": p_id,
                         "goal": data_record,
-                        # 1-word camouflage for other encoding schemes
-                        "full_prompt": full_prompt,
-                        "adv_prompt": full_prompt.get("user", ""),
-                        "ppl_fp": perplexity_analyzer.calculate_perplexity(
-                            text=f"{full_prompt.get("system", "")}\n{full_prompt.get("user", "")}"
-                        ),
-                        "ppl_fp_2": perplexity_analyzer.calculate_perplexity_2(
-                            text=f"{full_prompt.get("system", "")}\n{full_prompt.get("user", "")}"
-                        ),
-                        "ppl_ap": perplexity_analyzer.calculate_perplexity(
-                            text=full_prompt.get("user", "")
-                        ),
-                        "ppl_ap_2": perplexity_analyzer.calculate_perplexity_2(
-                            text=full_prompt.get("user", "")
-                        ),
-                        # full prompt camouflage for other encoding schemes
-                        "full_prompt_v2": full_prompt_v2,
-                        "adv_prompt_v2": full_prompt_v2.get("user", ""),
-                        "ppl_fp_v2": perplexity_analyzer.calculate_perplexity(
-                            text=f"{full_prompt_v2.get("system", "")}\n{full_prompt_v2.get("user", "")}"
-                        ),
-                        "ppl_fp_2_v2": perplexity_analyzer.calculate_perplexity_2(
-                            text=f"{full_prompt_v2.get("system", "")}\n{full_prompt_v2.get("user", "")}"
-                        ),
-                        "ppl_ap_v2": perplexity_analyzer.calculate_perplexity(
-                            text=full_prompt_v2.get("user", "")
-                        ),
-                        "ppl_ap_2_v2": perplexity_analyzer.calculate_perplexity_2(
-                            text=full_prompt_v2.get("user", "")
-                        ),
+                        "full_prompt": prompts,
+                        "adv_prompt": prompts.get("user", ""),
+                        "ppl": perplexity_analyzer.calculate_perplexity(text=prompt),
                     }
                 )
 
