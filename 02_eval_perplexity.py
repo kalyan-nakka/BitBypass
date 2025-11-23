@@ -229,7 +229,12 @@ class PerplexityAnalyzer:
         return perplexity
 
     def calculate_perplexity_2(self, text: str) -> float:
-        sample_input_ids = self.tokenizer.encode(text, return_tensors="pt", padding="max_length", max_length=20)
+        sample_input_ids = self.tokenizer.encode(
+            text,
+            return_tensors="pt",
+            padding="max_length",
+            max_length=20).to(self.model.device)
+
         with torch.no_grad():
             sample_outputs = self.model(sample_input_ids, labels=sample_input_ids)
 
