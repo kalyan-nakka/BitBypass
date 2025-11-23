@@ -83,7 +83,7 @@ def generate_encoded_prompt(encoding, text):
         )
 
     elif encoding == "atbash":
-        encoded = ''.join(
+        enc_text = ''.join(
             chr(90 - (ord(char) - 65)) if char.isupper() else
             chr(122 - (ord(char) - 97)) if char.islower() else char
             for char in text
