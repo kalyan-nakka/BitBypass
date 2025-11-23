@@ -212,7 +212,7 @@ class PerplexityAnalyzer:
             device_map="auto",
         )
         self.model.eval()
-        self.perplexity_metric = Perplexity(ignore_index=self.tokenizer.pad_token_id)
+        self.perplexity_metric = Perplexity(ignore_index=self.tokenizer.pad_token_id).to(self.model.device)
 
         # Add padding token if not present
         if self.tokenizer.pad_token is None:
