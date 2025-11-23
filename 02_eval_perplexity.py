@@ -46,6 +46,7 @@ class PerplexityAnalyzer:
     def __init__(self, model_name: str = "llama_2_lm"):
         self.tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME_HF_URLS_MAP[model_name])
         self.model = AutoModelForCausalLM.from_pretrained(MODEL_NAME_HF_URLS_MAP[model_name])
+        self.model = self.model.to('cuda')
         self.model.eval()
 
         # Add padding token if not present
@@ -53,7 +54,7 @@ class PerplexityAnalyzer:
             self.tokenizer.pad_token = self.tokenizer.eos_token
 
     def calculate_perplexity(self, text: str) -> float:
-        inputs = self.tokenizer(text, return_tensors="pt", truncation=True, max_length=512)
+        inputs = self.tokenizer(text, return_tensors="pt", truncation=True, max_length=512).to(self.model.device)
 
         with torch.no_grad():
             outputs = self.model(**inputs, labels=inputs["input_ids"])
