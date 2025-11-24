@@ -8,9 +8,7 @@ import pandas as pd
 
 from tqdm import tqdm
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from torchmetrics.text import Perplexity
 
-from src.eval import read_responses_from_json
 from src.utils import (get_dataset_path,
                        save_data_to_json,
                        get_bitbypass_prompt,
@@ -212,14 +210,17 @@ class PerplexityAnalyzer:
             device_map="auto",
         )
         self.model.eval()
-        self.perplexity_metric = Perplexity(ignore_index=self.tokenizer.pad_token_id).to(self.model.device)
 
         # Add padding token if not present
         if self.tokenizer.pad_token is None:
             self.tokenizer.pad_token = self.tokenizer.eos_token
 
     def calculate_perplexity(self, text: str) -> float:
-        inputs = self.tokenizer(text, return_tensors="pt", truncation=True, max_length=512).to(self.model.device)
+        inputs = self.tokenizer(
+            text,
+            return_tensors="pt",
+            truncation=True,
+            max_length=100).to(self.model.device)
 
         with torch.no_grad():
             outputs = self.model(**inputs, labels=inputs["input_ids"])
